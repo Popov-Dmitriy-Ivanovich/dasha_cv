@@ -1,0 +1,9 @@
+services:
+  cow_mobile_backend:
+      container_name: dasha_cv_backend
+      build: backend
+      # networks:
+      #   - postgres
+      #   - cow_mobile_backend
+      ports:
+        - 8080:8080

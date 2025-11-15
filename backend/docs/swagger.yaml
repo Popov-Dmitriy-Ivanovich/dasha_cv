@@ -1,0 +1,202 @@
+basePath: /
+definitions:
+  models.Contact:
+    properties:
+      type:
+        type: string
+      value:
+        type: string
+    type: object
+  models.Edu:
+    properties:
+      place:
+        type: string
+    type: object
+  models.JobDescription:
+    properties:
+      paragraph:
+        type: string
+    type: object
+  models.PreviousJob:
+    properties:
+      dateBegin:
+        type: string
+      dateEnd:
+        type: string
+      description:
+        items:
+          $ref: '#/definitions/models.JobDescription'
+        type: array
+      title:
+        type: string
+    type: object
+  models.Tag:
+    properties:
+      value:
+        type: string
+    type: object
+  models.User:
+    properties:
+      aboutMe:
+        type: string
+      birthDate:
+        type: string
+      cefr:
+        type: string
+      job:
+        type: string
+      location:
+        type: string
+      nameSurnamePatronimic:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:8080
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Diplom API
+  version: "1.0"
+paths:
+  /users:
+    get:
+      description: Возращает список id всех доступных user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              type: integer
+            type: array
+        "404":
+          description: Not Found
+      summary: Get list of user ids
+      tags:
+      - User
+  /users/{id}:
+    get:
+      description: Возращает пользователя
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/models.User'
+        "404":
+          description: Not Found
+      summary: Get concrete user
+      tags:
+      - User
+  /users/{id}/contacts:
+    get:
+      description: Возращает список контактов пользователя
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Contact'
+            type: array
+        "404":
+          description: Not Found
+      summary: Get list of user contacts
+      tags:
+      - User
+  /users/{id}/edu:
+    get:
+      description: Возращает список образований пользователя
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Edu'
+            type: array
+        "404":
+          description: Not Found
+      summary: Get list of user educations
+      tags:
+      - User
+  /users/{id}/jobs:
+    get:
+      description: Возращает список предыдущих работ пользователя
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.PreviousJob'
+            type: array
+        "404":
+          description: Not Found
+      summary: Get list of user jobs
+      tags:
+      - User
+  /users/{id}/tags:
+    get:
+      description: Возращает список навыков пользователя
+      parameters:
+      - description: ID пользователя
+        in: path
+        name: id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/models.Tag'
+            type: array
+        "404":
+          description: Not Found
+      summary: Get list of user skills
+      tags:
+      - User
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"
