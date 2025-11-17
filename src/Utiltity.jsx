@@ -15,7 +15,7 @@ function load_page_content() {
             link: "www.leningrad.ru",
         },
 
-        edu: "НИУ 'МЭИ'Кафедра 'Вычислительных машин, систем и сетей' института информационных и вычислительных технологий НИУ МЭИ",
+        edu: ["НИУ 'МЭИ'Кафедра 'Вычислительных машин, систем и сетей' института информационных и вычислительных технологий НИУ МЭИ"],
         about_me:
             "Бакалавр компьютерных наук (09.03.01 «Информатика и вычислительная техника»), в студенческие годы поучаствовал в нескольких хакатонах в роли капитана команды, разработчика и «водоноса» одновременно. Внес вклад в open-source проект Desbordante – наукоёмкий профилировщик данных для поиска сложных функциональных зависимостей.",
 
@@ -81,85 +81,37 @@ function load_page_content() {
         ],
     }
 }
+function General_info() {
 
-function NameSurnamePatronimic() {
     return (
-        <h1>
-            {page_content.name_surname_patronimic}
-        </h1>
-    )
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <h1 style={{ border: "2px,solid,green", backgroundColor: "yellow", padding: "5px", borderRadius: "7px", fontWeight: "normal", fontSize: "12pt", textDecoration: "underline", color: "blue" }}>{page_content.name_surname_patronimic}</h1>
+            <span>{page_content.birthdate}</span>
+            <span>{page_content.job_main}</span>
+            <span>{page_content.seniority}</span>
+        </div >
+    );
+
 }
-
-function SingleJobDescription({job_description}){
-    let p_num = 0;
-    const paragraphs = job_description.map( paragraph => (
-        <p key={p_num++}>
-            {paragraph}
-        </p>
-    ))
-    return (<>
-        {paragraphs}
-    </>)
-}
-
-function SingleJob({job}){
-    console.log("SingleJob job = ",job)
-    let finish_date = "настоящее время";
-    if(job.data_finish) {
-        finish_date = job.data_finish;
+function Tags() {
+    console.log(page_content.job_description)
+    let tags = [];
+    for (let i = 0; i < page_content.job_description.length; ++i) {
+        tags.push({ value: page_content.job_description[i], key: i });
     }
-    return (<>
-        <h2>{job.title}</h2>
-        <span className="single_job_period">{job.data_begin} - {finish_date}</span> 
-        <SingleJobDescription job_description={job.description}></SingleJobDescription>
-    </>)
-}
-
-function Jobs() {
-    return (<><SingleJob job={page_content.previous_jobs[0]}></SingleJob></>)
-}
-
-function Contacts() {
-    let phone_number = (<></>);
-    if (page_content && page_content.contacts && page_content.contacts.phone_number) {
-        phone_number = (<><li><span>Номер телелфона: {page_content.contacts.phone_number}</span></li></>)
-    }
-
-    let telegram = (<></>);
-    if (page_content && page_content.contacts && page_content.contacts.telegram) {
-        telegram = (<><li><span>Телеграм: {page_content.contacts.telegram}</span></li></>)
-    }
-    let email = (<></>)
-    if (page_content && page_content.contacts && page_content.contacts.email) {
-        email = (<><li><span>Почта: {page_content.contacts.email}</span></li></>)
-    }
-
-    let link = (<></>)
-    if (page_content && page_content.contacts && page_content.contacts.link) {
-        link = (<><li><span>Почта: {page_content.contacts.link}</span></li></>)
-    }
-    return (
-        <div className="contacts">
-            <ul>
-                {phone_number}
-                {telegram}
-                {email}
-                {link}
-            </ul>
-        </div>
-    )
+    console.log(tags)
 }
 
 export function PageContent() {
     if (!page_content) {
         load_page_content();
     }
+    Tags();
     return (
         <div className="page_content">
-            <NameSurnamePatronimic></NameSurnamePatronimic>
-            <Contacts></Contacts>
-            <Jobs></Jobs>
-            {/* {JSON.stringify(page_content)} */}
+            { }
+            <General_info />
         </div>
+
     );
 }
