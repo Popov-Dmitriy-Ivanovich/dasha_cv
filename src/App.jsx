@@ -5,9 +5,10 @@ function App() {
 
   return (
     <>
-        <PageContent></PageContent>
+      <PageContent></PageContent>
     </>
   )
 }
+
 
 export default App
