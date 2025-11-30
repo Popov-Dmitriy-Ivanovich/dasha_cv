@@ -15,7 +15,7 @@ function load_page_content() {
             link: "www.leningrad.ru",
         },
 
-        edu: "НИУ 'МЭИ'Кафедра 'Вычислительных машин, систем и сетей' института информационных и вычислительных технологий НИУ МЭИ",
+        edu: ["НИУ 'МЭИ'Кафедра 'Вычислительных машин, систем и сетей' института информационных и вычислительных технологий НИУ МЭИ"],
         about_me:
             "Бакалавр компьютерных наук (09.03.01 «Информатика и вычислительная техника»), в студенческие годы поучаствовал в нескольких хакатонах в роли капитана команды, разработчика и «водоноса» одновременно. Внес вклад в open-source проект Desbordante – наукоёмкий профилировщик данных для поиска сложных функциональных зависимостей.",
 
@@ -59,7 +59,7 @@ function load_page_content() {
                 ],
             },
             {
-                title: "ОООООО АУРУС",
+                title: "ООО АУРУС",
                 data_begin: "март 2024",
                 data_finish: "апрель 2025",
                 description: [
@@ -81,85 +81,202 @@ function load_page_content() {
         ],
     }
 }
+function General_info() {
 
-function NameSurnamePatronimic() {
     return (
-        <h1>
-            {page_content.name_surname_patronimic}
-        </h1>
-    )
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <h1 style={{ border: "2px solid grey", backgroundColor: "#F9F2E3", padding: "5px", borderRadius: "7px", fontWeight: "normal", fontSize: "12pt", color: "black" }}>{page_content.name_surname_patronimic}</h1>
+            <div style={{ display: "flex", flexDirection: "column", alignItems: "center", border: "2px solid grey", padding: "5px", borderRadius: "7px", fontWeight: "normal", fontSize: "12pt", color: "black", }}>
+                <span>{page_content.job_main}</span>
+                <span>Опыт работы:  {page_content.seniority}</span>
+                <span>Дата рождения:  {page_content.birthdate} </span>
+                <span>Возраст: {page_content.age}</span>
+                {/*возраст в скобочках меняется в зависимости от года и числа*/}
+                <span>{page_content.city}</span>
+            </div>
+        </div >
+    );
+}
+function Bio() {
+    return (
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div>{page_content.about_me}</div>
+        </div >
+
+    );
+
+
 }
 
-function SingleJobDescription({job_description}){
-    let p_num = 0;
-    const paragraphs = job_description.map( paragraph => (
-        <p key={p_num++}>
-            {paragraph}
-        </p>
-    ))
-    return (<>
-        {paragraphs}
-    </>)
-}
-
-function SingleJob({job}){
-    console.log("SingleJob job = ",job)
-    let finish_date = "настоящее время";
-    if(job.data_finish) {
-        finish_date = job.data_finish;
+function Education() {
+    let uni = [];
+    for (let i = 0; i < page_content.edu.length; ++i) {
+        uni.push({ value: page_content.edu[i], key: i });
     }
-    return (<>
-        <h2>{job.title}</h2>
-        <span className="single_job_period">{job.data_begin} - {finish_date}</span> 
-        <SingleJobDescription job_description={job.description}></SingleJobDescription>
-    </>)
+    console.log(uni);
+    let university = uni.map(edu => <div key={edu.key}> {edu.value}</ div >)
+    return (
+        <>Образование: {university}</>
+    );
 }
 
-function Jobs() {
-    return (<><SingleJob job={page_content.previous_jobs[0]}></SingleJob></>)
+function Tags() {
+    console.log(page_content.job_description)
+    let tags = [];
+    for (let i = 0; i < page_content.job_description.length; ++i) {
+        tags.push({ value: page_content.job_description[i], key: i });
+    }
+    console.log(tags);
+    /*
+    let variable
+    function foo(arg1, arg2){
+        for(i=0;i<arg1;++i)
+            console.log("privet")
+            for(i=0;i<arg2;++i)
+            console.log("mir")
+    }
+
+            foo(1, 2)
+            foo(3, 4)
+
+
+            function foo(arg1, arg2)
+            foo(1, 2)
+
+            let obj = {
+                name: "vanya"
+        print_name: () => {console.log(this.name)} 
+    }
+            let obj_copy = {...obj}
+            obj_copy.name = "petya"
+            obj_copy.print_name() // petya
+            obj.print_name() // vanya
+            */
+    let list_items = tags.map(tag => <div key={tag.key}> {tag.value}</ div >)
+
+
+    return (
+        <>{list_items}</>
+    );
 }
+
+
 
 function Contacts() {
-    let phone_number = (<></>);
-    if (page_content && page_content.contacts && page_content.contacts.phone_number) {
-        phone_number = (<><li><span>Номер телелфона: {page_content.contacts.phone_number}</span></li></>)
-    }
 
-    let telegram = (<></>);
-    if (page_content && page_content.contacts && page_content.contacts.telegram) {
-        telegram = (<><li><span>Телеграм: {page_content.contacts.telegram}</span></li></>)
-    }
-    let email = (<></>)
-    if (page_content && page_content.contacts && page_content.contacts.email) {
-        email = (<><li><span>Почта: {page_content.contacts.email}</span></li></>)
-    }
-
-    let link = (<></>)
-    if (page_content && page_content.contacts && page_content.contacts.link) {
-        link = (<><li><span>Почта: {page_content.contacts.link}</span></li></>)
-    }
     return (
-        <div className="contacts">
-            <ul>
-                {phone_number}
-                {telegram}
-                {email}
-                {link}
-            </ul>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", border: "2px,solid,grey", padding: "5px", borderRadius: "7px", fontWeight: "normal", fontSize: "12pt", color: "black", }}>
+            <div>{page_content.contacts.phone_number}</div>
+            <div>{page_content.contacts.telegram}</div>
+            <div>{page_content.contacts.link}</div>
+            <div>{page_content.contacts.email}</div>
+            <div>{page_content.cefr}</div>
         </div>
     )
 }
+
+function DateToStr(date) {
+    if (!date) {
+        return "настоящее время"
+    }
+    return date
+}
+
+function PreviousJobs() {
+    let jobsList = [];
+    for (let i = 0; i < page_content.previous_jobs.length; ++i) {
+        jobsList.push({ value: page_content.previous_jobs[i], key: i });
+    };
+    console.log(jobsList);
+    let jobsItems = page_content.previous_jobs.map(jobsList => <div key={jobsList.key}> {jobsList.value}</ div >);
+    console.log(jobsItems);
+
+
+    return (
+        <span>
+            <div>
+                <div>{page_content.previous_jobs[0].title}</div>
+                <div>{page_content.previous_jobs[0].data_begin}- {DateToStr(page_content.previous_jobs[0].data_finish)}</div>
+                <div>{page_content.previous_jobs[0].description}</div>
+            </div>
+            <div>
+                <div>{page_content.previous_jobs[1].title}</div>
+                <div>{page_content.previous_jobs[1].data_begin}- {DateToStr(page_content.previous_jobs[1].data_finish)}</div>
+                <div>{page_content.previous_jobs[1].description}</div>
+            </div>
+            <div>
+                <div>{page_content.previous_jobs[2].title}</div>
+                <div>{page_content.previous_jobs[2].data_begin}- {DateToStr(page_content.previous_jobs[2].data_finish)}</div>
+                <div>{page_content.previous_jobs[2].description}</div>
+            </div>
+        </span>
+
+
+    );
+
+
+}
+function Finish() {
+    let f = page_content.previous_jobs[2].data_finish;
+    if (f === null) {
+        f = "настоящее время";
+        return (f);
+    }
+}
+
+
+
+/*
+const listItems = products.map(product =>
+  <li key={product.id}>
+    {product.title}
+  </li>
+);
+ 
+let ternary = (par)=> {
+    if (par) {
+        return 'magneta'
+    } else {
+        return 'darkgreen'
+    }
+}
+ 
+let var1 = product.IsFruit ? 'magenta' : 'darkgreen';
+let var2 = ternary(product.IsFruit);
+ 
+let listItems = []
+for (let i = 0; i < products.length; ++i) {
+    listItems.push(<li key = products[i].id> products[i].value </li>)
+}
+ 
+То же самое, что и 
+// dummy({id: "123", title: "321233"})
+func dummy (p) {
+    return <li key=p.id> {p.title}</li>
+}
+p => <li key = p.id> {p.title} </li>
+const li = products.map(dummy)
+[dummy(products[0]), dummy(products[1]), ...]
+[<li key=1> Капуста</li>, <li key = 2> Чеснок </li> ...]
+*/
 
 export function PageContent() {
     if (!page_content) {
         load_page_content();
     }
     return (
+
         <div className="page_content">
-            <NameSurnamePatronimic></NameSurnamePatronimic>
-            <Contacts></Contacts>
-            <Jobs></Jobs>
-            {/* {JSON.stringify(page_content)} */}
-        </div>
+            { }
+            <General_info />
+            <Contacts />
+            <Education />
+            <Bio />
+            <Tags />
+            {/* <Finish /> */}
+            <PreviousJobs></PreviousJobs>
+
+        </div >
+
     );
 }
